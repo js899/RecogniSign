@@ -1,1 +1,2 @@
 # RecogniSign
+![RecogniSign](/sign.jpg)
