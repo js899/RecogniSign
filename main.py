@@ -1,5 +1,6 @@
 ########## IMPORTS
-import random, os, pickle
+import random
+import os
 import tensorflow as tf
 from tensorflow import keras
 from keras.models import Sequential, load_model
@@ -13,7 +14,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 #% matplotlib inline
 import pandas
-import cv2
 from PIL import Image
 #from tensorflow.keras.datasets import mnist, fashion_mnist
 from sklearn.model_selection import train_test_split
@@ -58,11 +58,11 @@ X_train = X_train/255.0
 X_test = X_test/255.0
 
 ########## BASELINE MODEL
-#X_train = X_train.reshape(X_train.shape[0], 30*30)
+X_train = X_train.reshape(X_train.shape[0],30,30,3)
 #X_test = X_test.reshape(X_test.shape[0], 30*30)
 base_model = tf.keras.Sequential([
-    tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(128, activation='relu', input_shape=(30, 30, 1)),
+    tf.keras.layers.Flatten(input_shape=(1,30,30,3),),
+    tf.keras.layers.Dense(128, activation='relu', input_shape=(1,30,30,1)),
     tf.keras.layers.Dense(43)
 ])
 
@@ -71,6 +71,9 @@ base_model.compile(optimizer='adam',
               metrics=['accuracy'])
 
 base_model.fit(X_train, y_train, epochs=20)
+
+########## SAVE MODEL
+base_model.save("traffic_model")
 
 test_loss, test_acc = base_model.evaluate(X_test,  y_test, verbose=2)
 print('Test accuracy:', test_acc)
@@ -126,16 +129,19 @@ classes = { 0:'Speed limit (20km/h)',
 def test_on_img(img):
     image = Image.open(img)
     image = image.resize((30,30))
-    data_ = []  
-    data_.append(np.array(image))
-    X_test_image=np.array(data_)
+    #data_ = []
+    #data_.append(np.array(image))
+    X_test_image=np.array(image)
+    X_test_image = X_test_image.reshape(1, 30, 30, 3)
     Y_pred = base_model.predict_classes(X_test_image)
     return image,Y_pred
 
+
+########## TEST ON AN IMAGE
 plot, prediction = test_on_img('/home/jaideep/Desktop/folder/MY WORKS AND CERTIFICATES/techfest IIT Bombay 2020/RecogniSign/archive/test/00001.png')
 s = [str(i) for i in prediction]
 print(s)
-a = int("".join(s)) 
+a = int("".join(s))
 print(a)
 print("Predicted traffic sign is: ", classes[a])
 plt.imshow(plot)
