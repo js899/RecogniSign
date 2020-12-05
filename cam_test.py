@@ -4,9 +4,9 @@ import tensorflow as tf
 import cv2
 import numpy as np
 from sklearn.model_selection import train_test_split
-from test import imgpreprocess
-from test import classname
-from main import base_model
+from main_test import imgpreprocess
+from main_test import classname
+from main_train import base_model
 
 ########## RESOLUTION PARAMETERS
 frameWidth = 640
