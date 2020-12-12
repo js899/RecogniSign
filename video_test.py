@@ -1,3 +1,6 @@
+# TO TEST ON A VIDEO DATASET. THE VIDEO MUST CONTAIN IMAGES OF TRAFFIC SIGNS IN SEQUENCE.
+# PUT THE PATH OF VIDEO FILE IN LINE 71.
+
 import cv2
 import numpy as np
 import tensorflow as tf
@@ -64,7 +67,7 @@ def classname(class_index):
 threshold = 0.80
 font = cv2.FONT_HERSHEY_SIMPLEX
 
-########## CAMERA
+########## VIDEO
 cap = cv2.VideoCapture("videoplayback.mp4")
 cap.set(cv2.CAP_PROP_FPS, int(29))
 
